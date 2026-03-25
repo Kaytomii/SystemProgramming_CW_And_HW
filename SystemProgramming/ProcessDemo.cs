@@ -20,6 +20,8 @@ internal class ProcessDemo
             Console.WriteLine("4 - CreateProcess");
             Console.WriteLine("5 - KillProcess");
             Console.WriteLine("6 - CallTestProgram");
+            Console.WriteLine("7 - Launch dou.ua");
+            Console.WriteLine("8 - Save Processes in file");
             Console.WriteLine("0 - Exit");
             key = Console.ReadKey();
 
@@ -49,6 +51,12 @@ internal class ProcessDemo
                     CallTestProgram();
                     break;
 
+                case '7':
+                    LaunchWeb();
+                    break;
+                case '8':
+                    SaveFile();
+                    break;
                 default: Console.WriteLine("unknown operation");
                     break;
             }
@@ -178,6 +186,37 @@ internal class ProcessDemo
                 Console.WriteLine(error);
             }
            
+        }
+    }
+    private void LaunchWeb()
+    {
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = "https://dou.ua",
+            UseShellExecute = true
+        });
+
+    }
+    private void SaveFile()
+    {
+        string filename = "processes.txt";
+        var processes = Process.GetProcesses();
+
+        using (StreamWriter  sw = new StreamWriter(filename))
+        {
+            foreach (var p in processes)
+            {
+                sw.WriteLine($"{p.ProcessName} (ID: {p.Id})");
+            }
+        }
+
+        if (File.Exists(filename))
+        {
+            Console.WriteLine($"File save: {filename}");
+        }
+        else
+        {
+            Console.WriteLine("Error file dont save");
         }
     }
 }
